@@ -39,6 +39,49 @@ $ git config --global user.name "761472239"
 6.git push -u origin master
 ```
 
+# 更新文件
+
+```
+git add 文件
+git commit -m "A"
+git push 
+```
+
+
+
+# 删除文件
+
+```
+首先删除 暂存区的文件、目录
+
+commit 
+
+最后push
+```
+
+
+
+# 乱码问题
+
+[git status 显示中文和解决中文乱码_运维_夏虫不可语冰-CSDN博客](https://blog.csdn.net/u012145252/article/details/81775362)
+
+
+
+
+
+# 复原文件
+
+```
+git status 查看一下
+git checkout -- markdown一些语法.md
+```
+
+
+
+
+
+
+
 ![1582876252871](git使用过程.assets/1582876252871.png)
 
 在 `Untracked files` 下面，都是未跟踪文件
@@ -119,7 +162,7 @@ git commit -a // Git 就会自动把所有已经跟踪过的文件暂存起来�
 rm PROJECTS.md // 从工作目录中删除文件
 git rm PROJECTS.md //连带从工作目录中删除指定的文件，从已跟踪文件清单中移除,记录此次移除文件的操作
 git rm --cached README // 仅删除暂存区，不删除目录中的文件
-
+git rm -r - -cached test.txt 递归删除，用于删除目录
 git mv file_from file_to
 	等于
     $ mv README.md README
@@ -136,9 +179,6 @@ git remote -v 会显示需要读写远程仓库使用的 Git 保存的简写与�
 git remote add <shortname> <url> 添加一个新的远程 Git 仓库，同时指定一个你可以轻松引用的简写
 git fetch pb 从远程仓库中抓取与拉取(命令会访问远程仓库，从中拉取所有你还没有的数据)执行完成后，你将会拥有那个远程仓库中所有分支的引用，可以随时合并或查看。
 git push origin master 推送到远程仓库
-
-
-
 ```
 
 ![1582876878638](git使用过程.assets/1582876878638.png)
