@@ -1,0 +1,540 @@
+# 树的遍历 - 介绍 
+
+- [前序遍历](https://leetcode-cn.com/explore/learn/card/data-structure-binary-tree/2/traverse-a-tree/7/#_1)
+- [中序遍历](https://leetcode-cn.com/explore/learn/card/data-structure-binary-tree/2/traverse-a-tree/7/#_2)
+- [后序遍历](https://leetcode-cn.com/explore/learn/card/data-structure-binary-tree/2/traverse-a-tree/7/#_3)
+- [递归和迭代](https://leetcode-cn.com/explore/learn/card/data-structure-binary-tree/2/traverse-a-tree/7/#_4)
+
+**前序遍历**
+
+ 	前序遍历首先访问根节点，然后遍历左子树，最后遍历右子树。 
+
+**中序遍历**
+
+ 	中序遍历是先遍历左子树，然后访问根节点，然后遍历右子树。 
+
+​	 通常来说，对于二叉搜索树，我们可以通过中序遍历得到一个递增的有序序列。 
+
+**后序遍历**
+
+​	后序遍历是先遍历左子树，然后遍历右子树，最后访问树的根节点。 
+
+​	值得注意的是，当你删除树中的节点时，删除过程将按照后序遍历的顺序进行。 也就是说，当你删除一个节点时，你将首先删除它的左节点和它的右边的节点，然后再删除节点本身。 
+
+**递归和迭代**
+
+
+
+
+
+# 有两种通用的遍历树的策略
+
+**深度优先搜索（DFS）**
+
+​	在这个策略中，我们采用深度作为优先级，以便从跟开始一直到达某个确定的叶子，然后再返回根到达另一个分支。
+
+​	深度优先搜索策略又可以根据根节点、左孩子和右孩子的相对顺序被细分为前序遍历，中序遍历和后序遍历。
+
+**宽度优先搜索（BFS）**
+
+​	我们按照高度顺序一层一层的访问整棵树，高层次的节点将会比低层次的节点先被访问到。
+
+​	下图中的顶点按照访问的顺序编号，按照 1-2-3-4-5 的顺序来比较不同的策略。
+
+ <img src="树的遍历.assets/071065c80aaf44da930c7ccb2156b3eac6309d446eb36a376d6478d17cc2400f-102.png" alt="102.png" style="zoom: 25%;" /> 
+
+
+
+#   二叉树的前序遍历 
+
+给定一个二叉树，返回它的 *前序* 遍历。
+
+ **示例:**
+
+```
+输入: [1,null,2,3]  
+   1
+    \
+     2
+    /
+   3 
+
+输出: [1,2,3]
+```
+
+**进阶:** 递归算法很简单，你可以通过迭代算法完成吗？
+
+
+
+## 方法 1：迭代
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ * int val;
+ * TreeNode left;
+ * TreeNode right;
+ * TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        LinkedList<TreeNode> stack = new LinkedList<>();
+        LinkedList<Integer> output = new LinkedList<>();
+        if (root == null) {
+            return output;
+        }
+
+        stack.add(root);
+        while (!stack.isEmpty()) {
+            TreeNode node = stack.pollLast();
+            output.add(node.val);
+            if (node.right != null) {
+                stack.add(node.right);
+            }
+            if (node.left != null) {
+                stack.add(node.left);
+            }
+        }
+        return output;
+    }
+}
+```
+
+## 方法 2：莫里斯遍历
+
+
+
+## 递归
+
+```java
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        helper(root, res);
+        return res;
+    }
+	//前序遍历
+    private void helper(TreeNode root, List<Integer> res) {
+        if (root == null) return;
+        res.add(root.val);
+        helper(root.left, res);
+        helper(root.right, res);
+    }
+}
+
+```
+
+## 迭代
+
+```java
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        Deque<TreeNode> stack = new LinkedList<>();
+        TreeNode p = root;
+        List<Integer> res = new ArrayList<>();
+        while (p != null || !stack.isEmpty()) {
+            while (p != null) {
+                res.add(p.val);
+                stack.push(p);
+                p = p.left;
+            }
+            p = stack.pop().right;
+        }
+        return res;
+    }
+}
+
+```
+
+
+
+# 二叉树的中序遍历
+
+## 方法一：递归
+
+```java
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ * int val;
+ * TreeNode left;
+ * TreeNode right;
+ * TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+
+        List<Integer> res = new ArrayList<>();
+        helper(root, res);
+        return res;
+    }
+
+    public void helper(TreeNode root, List<Integer> res) {
+        if (root == null) {
+            return;
+        }
+        if (root.left != null) {
+            helper(root.left, res);
+        }
+        res.add(root.val);
+        if (root.right != null) {
+            helper(root.right, res);
+        }
+
+    }
+}
+```
+
+## 方法二：基于栈的遍历
+
+```java
+public class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode curr = root;
+        while (curr != null || !stack.isEmpty()) {
+            while (curr != null) {
+                stack.push(curr);
+                curr = curr.left;
+            }
+            curr = stack.pop();
+            res.add(curr.val);
+            curr = curr.right;
+        }
+        return res;
+    }
+}
+```
+
+# 二叉树的后序遍历
+
+## 方法一：递归
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        helper(root,list);
+        return list;
+        
+    }
+    public void helper(TreeNode root,List<Integer> list) {
+        if(root==null){
+            return;
+        }
+         if(root.left!=null){
+            helper(root.left,list);
+        }
+        if(root.right!=null){
+            helper(root.right,list);
+        }
+        list.add(root.val);
+    }
+}
+```
+
+官方写法
+
+```java
+class Solution {
+  public List<Integer> postorderTraversal(TreeNode root) {
+    LinkedList<TreeNode> stack = new LinkedList<>();
+    LinkedList<Integer> output = new LinkedList<>();
+    if (root == null) {
+      return output;
+    }
+
+    stack.add(root);
+    while (!stack.isEmpty()) {
+      TreeNode node = stack.pollLast();
+      output.addFirst(node.val);
+      if (node.left != null) {
+        stack.add(node.left);
+      }
+      if (node.right != null) {
+        stack.add(node.right);
+      }
+    }
+    return output;
+  }
+}
+```
+
+
+
+# 二叉树的层次遍历
+
+[102. 二叉树的层次遍历 - 力扣（LeetCode）](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
+
+给定一个二叉树，返回其按层次遍历的节点值。 （即逐层地，从左到右访问所有节点）。
+
+例如:
+给定二叉树:  `[3,9,20,null,null,15,7]`,
+
+        3
+       / \
+      9  20
+        /  \
+       15   7
+返回其层次遍历结果：
+
+```
+[
+  [3],
+  [9,20],
+  [15,7]
+]
+```
+
+## 方法 1：递归
+
+**算法**
+
+最简单的解法就是递归，首先确认树非空，然后调用递归函数 `helper(node, level)`，参数是当前节点和节点的层次。程序过程如下：
+
+*   输出列表称为 `levels`，当前最高层数就是列表的长度 `len(levels)`。比较访问节点所在的层次 `level` 和当前最高层次 `len(levels)` 的大小，如果前者更大就向 `levels` 添加一个空列表。
+*   将当前节点插入到对应层的列表 `levels[level]` 中。
+*   递归非空的孩子节点：`helper(node.left / node.right, level + 1)`。
+
+**实现**
+
+```java
+class Solution {
+    List<List<Integer>> levels = new ArrayList<List<Integer>>();
+
+    public void helper(TreeNode node, int level) {
+        // start the current level
+        if (levels.size() == level)
+            levels.add(new ArrayList<Integer>());
+
+         // fulfil the current level
+         levels.get(level).add(node.val);
+
+         // process child nodes for the next level
+         if (node.left != null)
+            helper(node.left, level + 1);
+         if (node.right != null)
+            helper(node.right, level + 1);
+    }
+    
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        if (root == null) return levels;
+        helper(root, 0);
+        return levels;
+    }
+}
+```
+
+**复杂度分析**
+
+*   时间复杂度：O(N)，因为每个节点恰好会被运算一次。
+*   空间复杂度：O(N)，保存输出结果的数组包含 `N` 个节点的值。
+
+## 方法 2：迭代
+
+**算法**
+
+上面的递归方法也可以写成迭代的形式。
+
+我们将树上顶点按照层次依次放入*队列*结构中，队列中元素满足 FIFO（先进先出）的原则。在 Java 中可以使用 [`Queue` 接口中的 `LinkedList`](https://docs.oracle.com/javase/7/docs/api/java/util/Queue.html)实现。在 Python 中如果使用 [`Queue`](https://docs.python.org/3/library/queue.html) 结构，但因为它是为多线程之间安全交换而设计的，所以使用了锁，会导致性能不佳。因此在 Python 中可以使用 [`deque`](https://docs.python.org/3/library/collections.html#collections.deque) 的 `append()` 和 `popleft()` 函数来快速实现队列的功能。
+
+第 0 层只包含根节点 `root` ，算法实现如下：
+
+*   初始化队列只包含一个节点 `root` 和层次编号 `0` ： `level = 0`。
+*   当队列非空的时候：
+    *   在输出结果 `levels` 中插入一个空列表，开始当前层的算法。
+    *   计算当前层有多少个元素：等于队列的长度。
+    *   将这些元素从队列中弹出，并加入 `levels` 当前层的空列表中。
+    *   将他们的孩子节点作为下一层压入队列中。
+    *   进入下一层 `level++`。
+
+**实现**
+
+```java
+class Solution {
+  public List<List<Integer>> levelOrder(TreeNode root) {
+    List<List<Integer>> levels = new ArrayList<List<Integer>>();
+    if (root == null) return levels;
+
+    Queue<TreeNode> queue = new LinkedList<TreeNode>();
+    queue.add(root);
+    int level = 0;
+    while ( !queue.isEmpty() ) {
+      // start the current level
+      levels.add(new ArrayList<Integer>());
+
+      // number of elements in the current level
+      int level_length = queue.size();
+      for(int i = 0; i < level_length; ++i) {
+        TreeNode node = queue.remove();
+
+        // fulfill the current level
+        levels.get(level).add(node.val);
+
+        // add child nodes of the current level
+        // in the queue for the next level
+        if (node.left != null) queue.add(node.left);
+        if (node.right != null) queue.add(node.right);
+      }
+      // go to next level
+      level++;
+    }
+    return levels;
+  }
+}
+```
+
+**复杂度分析**
+
+- 时间复杂度：O(N)，因为每个节点恰好会被运算一次。
+- 空间复杂度：O(N)，保存输出结果的数组包含 N 个节点的值。
+
+
+
+
+
+# 前中后层总结
+
+[【LeetCode算法修炼+动画演示】——X.遍历二叉树的方法合集、Morris遍历、94. 二叉树的中序遍历、144. 二叉树的前序遍历、145. 二叉树的后序遍历](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/solution/leetcodesuan-fa-xiu-lian-dong-hua-yan-shi-xbian--2/)
+
+## 递归
+
+```java
+前序遍历
+public static void preOrderRecur(TreeNode head) {
+    if (head == null) {
+        return;
+    }
+    System.out.print(head.value + " ");
+    preOrderRecur(head.left);
+    preOrderRecur(head.right);
+}
+中序遍历
+public static void preOrderRecur(TreeNode head) {
+    if (head == null) {
+        return;
+    }
+    System.out.print(head.value + " ");
+    preOrderRecur(head.left);
+    preOrderRecur(head.right);
+}
+后序遍历
+public static void postOrderRecur(TreeNode head) {
+    if (head == null) {
+        return;
+    }
+    postOrderRecur(head.left);
+    postOrderRecur(head.right);
+    System.out.print(head.value + " ");
+}
+```
+
+## 迭代
+
+本质上是在模拟递归，因为在递归的过程中使用了系统栈，所以在迭代的解法中常用`Stack`来模拟系统栈。 
+
+
+
+ ![中序遍历流程图](树的遍历.assets/6233a9685447d0b4d7b513f739151ca065e5697e24070bcafc1ee5d28f9155a6.png) 
+
+```java
+前序遍历
+public static void preOrderIteration(TreeNode head) {
+	if (head == null) {
+		return;
+	}
+	Stack<TreeNode> stack = new Stack<>();
+	stack.push(head);
+	while (!stack.isEmpty()) {
+		TreeNode node = stack.pop();
+		System.out.print(node.value + " ");
+		if (node.right != null) {
+			stack.push(node.right);
+		}
+		if (node.left != null) {
+			stack.push(node.left);
+		}
+	}
+}
+中序遍历
+public static void inOrderIteration(TreeNode head) {
+	if (head == null) {
+		return;
+	}
+	TreeNode cur = head;
+	Stack<TreeNode> stack = new Stack<>();
+	while (!stack.isEmpty() || cur != null) {
+		while (cur != null) {
+			stack.push(cur);
+			cur = cur.left;
+		}
+		TreeNode node = stack.pop();
+		System.out.print(node.value + " ");
+		if (node.right != null) {
+			cur = node.right;
+		}
+	}
+}
+后序遍历
+public static void postOrderIteration(TreeNode head) {
+		if (head == null) {
+			return;
+		}
+		Stack<TreeNode> stack1 = new Stack<>();
+		Stack<TreeNode> stack2 = new Stack<>();
+		stack1.push(head);
+		while (!stack1.isEmpty()) {
+			TreeNode node = stack1.pop();
+			stack2.push(node);
+			if (node.left != null) {
+				stack1.push(node.left);
+			}
+			if (node.right != null) {
+				stack1.push(node.right);
+			}
+		}
+		while (!stack2.isEmpty()) {
+			System.out.print(stack2.pop().value + " ");
+		}
+	}
+后序遍历 用一个指针cur标记
+public static void postOrderIteration2(TreeNode head) {
+	if (head == null) {
+		return;
+	}
+	TreeNode cur = null;
+	Stack<TreeNode> stack = new Stack<>();
+	stack.push(head);
+	while (!stack.isEmpty()) {
+		TreeNode peek = stack.peek();
+		if (peek.left != null && peek.left != cur && peek.right != cur) {
+			stack.push(peek.left);
+			cur = peek.left;
+		} else if (peek.right != null && peek.right != cur) {
+			stack.push(peek.right);
+			cur = peek.right;
+		} else {
+			TreeNode pop = stack.pop();
+			System.out.print(pop.value + " ");
+			cur = pop;
+		}
+	}
+}
+
+```
+
