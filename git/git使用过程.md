@@ -28,23 +28,14 @@ $ git config --global user.name "761472239"
 
    ![1582874457762](git使用过程.assets/1582874457762.png)
 
-
-
-
-
 2. 打开本地的git
 
 ```
 1.github上创建仓库，并复制一个提交代码的地址
-
 2.git init 
-
 3.git add . //其中，.表示你的项目，推荐直接用你的项目名。
-
 4.git commit -m "提交说明" //提交代码，你可以添加提交说明，也可以不添加
-
 5.git remote add origin http://.... 同步代码到github,代表的就是刚刚你copy的那个地址
-
 6.git push -u origin master
 ```
 
@@ -144,6 +135,7 @@ git remote -v 会显示需要读写远程仓库使用的 Git 保存的简写与�
 
 git remote add <shortname> <url> 添加一个新的远程 Git 仓库，同时指定一个你可以轻松引用的简写
 git fetch pb 从远程仓库中抓取与拉取(命令会访问远程仓库，从中拉取所有你还没有的数据)执行完成后，你将会拥有那个远程仓库中所有分支的引用，可以随时合并或查看。
+git push origin master 推送到远程仓库
 
 
 
