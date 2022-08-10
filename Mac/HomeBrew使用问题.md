@@ -1,0 +1,1 @@
+[(9条消息) Homebrew brew update 长时间没反应（或卡在 Updating Homebrew...）_卡尔特斯的博客-CSDN博客_brew update没反应](https://blog.csdn.net/zz00008888/article/details/113880633)
